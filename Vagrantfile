@@ -112,7 +112,7 @@ Vagrant.configure("2") do |config|
       sudo apt-get clean all
       sudo apt-get update
       sudo apt-get install -y htop iotop iftop apache2 php php-cli php-mcrypt php-curl curl libapache2-mod-php
-      sudo apt-get install -y build-essential software-properties-common vim curl wget tmux ruby2.3 ruby2.3-dev libsqlite3-dev curl git
+      sudo apt-get install -y build-essential software-properties-common vim curl wget tmux ruby2.3 ruby2.3-dev libsqlite3-dev curl git mailutils
     SHELL
 
     php7dev.vm.provision "file", source: "sample.mysql.list", destination: "~/mysql.list"
@@ -140,13 +140,20 @@ Vagrant.configure("2") do |config|
       sudo apt-get --yes --force-yes install phpmyadmin
     SHELL
 
+    # copy and enable phpmyadmin.php7.local vhost
     php7dev.vm.provision "file", source: "sample.phpmyadmin.conf", destination: "~/phpmyadmin.php7.local.conf"
     php7dev.vm.provision "shell", inline: "sudo mv /home/ubuntu/phpmyadmin.php7.local.conf /etc/apache2/sites-available/phpmyadmin.php7.local.conf"
     php7dev.vm.provision "shell", inline: "sudo a2ensite phpmyadmin.php7.local"
+
+    # copy and enable mailcatcher.php7.local vhost
+    php7dev.vm.provision "file", source: "sample.mailcatcher.conf", destination: "~/mailcatcher.php7.local.conf"
+    php7dev.vm.provision "shell", inline: "sudo mv /home/ubuntu/mailcatcher.php7.local.conf /etc/apache2/sites-available/mailcatcher.php7.local.conf"
+    php7dev.vm.provision "shell", inline: "sudo a2ensite mailcatcher.php7.local"
     
     php7dev.vm.provision "shell", inline: "curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer"
 
     php7dev.vm.provision "shell", inline: "sudo gem install mailcatcher"
+    php7dev.vm.provision "shell", inline: '/usr/bin/env mailcatcher --ip=0.0.0.0'
 
   end
 end
