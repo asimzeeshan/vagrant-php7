@@ -112,7 +112,7 @@ Vagrant.configure("2") do |config|
       sudo apt-get clean all
       sudo apt-get update
       sudo apt-get install -y htop iotop iftop apache2 php php-cli php-mcrypt php-curl curl libapache2-mod-php
-      sudo apt-get install -y build-essential software-properties-common vim curl wget tmux ruby2.3 ruby2.3-dev libsqlite3-dev curl git mailutils
+      sudo apt-get install -y build-essential software-properties-common vim curl wget tmux ruby2.3 ruby2.3-dev libsqlite3-dev curl git
     SHELL
 
     php7dev.vm.provision "file", source: "sample.mysql.list", destination: "~/mysql.list"
