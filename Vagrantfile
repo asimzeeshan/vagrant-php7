@@ -149,6 +149,11 @@ Vagrant.configure("2") do |config|
     php7dev.vm.provision "file", source: "sample.mailcatcher.conf", destination: "~/mailcatcher.php7.local.conf"
     php7dev.vm.provision "shell", inline: "sudo mv /home/ubuntu/mailcatcher.php7.local.conf /etc/apache2/sites-available/mailcatcher.php7.local.conf"
     php7dev.vm.provision "shell", inline: "sudo a2ensite mailcatcher.php7.local"
+
+    # enable mailcatcher.ini module in php
+    php7dev.vm.provision "file", source: "sample.mailcatcher.ini", destination: "~/mailcatcher.ini"
+    php7dev.vm.provision "shell", inline: "sudo mv /home/ubuntu/mailcatcher.ini /etc/php/7.0/mods-available/mailcatcher.ini"
+    php7dev.vm.provision "shell", inline: "sudo phpenmod mailcatcher"
     
     php7dev.vm.provision "shell", inline: "curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer"
 
